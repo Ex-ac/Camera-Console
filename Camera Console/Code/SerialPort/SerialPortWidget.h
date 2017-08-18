@@ -19,47 +19,54 @@ class SerialPortWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit SerialPortWidget(QWidget *parent = nullptr);
+	SerialPortWidget(QSerialPort *serialport, QWidget *parent = nullptr);
+	
+
 
 public slots:
 	void flushAvaliablePort();
 	void openClosePort(QString &name);
 
 private slots:
-void on_baudRateComboBox_currentIndexChanged(int i);
-void on_baudRateSpinBox_valueChanged(int i);
-void on_dataBitsComboBox_currentIndexChanged(int i);
+void on__baudRateComboBox_currentIndexChanged(int i);
+void on__baudRateSpinBox_valueChanged(int i);
+void on__dataBitsComboBox_currentIndexChanged(int i);
+void on__stopBitsComboBox_currentIndexChanged(int i);
+void on__parityComboBox_currentIndexChanged(int i);
+void on__flowControlComboBox_currentIndexChanged(int i);
+
+
 signals:
 	void message(QString &message);
 
 private:
-	QPushButton *openCloseButton;
-	QPushButton *flushButton;
+	QPushButton *_openCloseButton;
+	QPushButton *_flushButton;
 	
-	QLabel *portNameLabel;
-	QComboBox *portNameComboBox;
+	QLabel *_portNameLabel;
+	QComboBox *_portNameComboBox;
 
-	QLabel *baudRateLabel;
-	QComboBox *baudRateComboBox;
-	QSpinBox *baudRateSpinBox;
+	QLabel *_baudRateLabel;
+	QComboBox *_baudRateComboBox;
+	QSpinBox *_baudRateSpinBox;
 
 
-	QLabel *dataBitsLabel;
-	QComboBox *dataBitsComboBox;
+	QLabel *_dataBitsLabel;
+	QComboBox *_dataBitsComboBox;
 
-	QLabel *stopBitsLabel;
-	QComboBox *stopBitsComboBox;
+	QLabel *_stopBitsLabel;
+	QComboBox *_stopBitsComboBox;
 
-	QLabel *parityLabel;
-	QComboBox *partiyComboBox;
+	QLabel *_parityLabel;
+	QComboBox *_parityComboBox;
 
-	QLabel *directionLabel;
-	QLabel *directionComboBox;
+	QLabel *_directionLabel;
+	QLabel *_directionComboBox;
 
-	QLabel *flowControlLabel;
-	QLabel *floeControlComboBox;
+	QLabel *_flowControlLabel;
+	QComboBox *_flowControlComboBox;
 
-	QSerialPort serialPort;
+	QSerialPort *_serialPort;
 
 	//is need??
 	bool isOpened = false;
