@@ -7,7 +7,9 @@
 message("You are running qmake on a generated .pro file. This may not work!")
 
 
-HEADERS += ./Code/SerialPort/SerialPortWidget.h
+HEADERS += ./Code/SerialPort/SerialPortWidget.h \
+    ./Code/SelectedCamera/SelectedCameraWidget.h
 SOURCES += ./Code/main.cpp \
+    ./Code/SelectedCamera/SelectedCameraWidget.cpp \
     ./Code/SerialPort/SerialPortWidget.cpp
 RESOURCES += CameraConsole.qrc

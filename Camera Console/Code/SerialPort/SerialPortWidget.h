@@ -23,10 +23,12 @@ public:
 
 	inline QSerialPort *_currentSerialPort() { return _serialPort; }
 
+signals:
+	void message(const QString &str);
 
 public slots:
 	void flushAvaliablePort();
-	bool openClosePort();
+	void openClosePort();
 
 private slots:
 	void on__baudRateComboBox_currentIndexChanged(int);

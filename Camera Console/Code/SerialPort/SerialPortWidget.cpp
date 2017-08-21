@@ -14,7 +14,7 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 	bool isOpen = _serialPort->isOpen();
 
 	_openCloseButton = new QPushButton;
-	
+	_openCloseButton->setDefault(true);
 
 	_flushButton = new QPushButton(tr(u8"刷新"));
 	
@@ -42,7 +42,7 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 	_baudRateSpinBox->setMinimum(0);
 	_baudRateSpinBox->setMaximum(99999999);
 	_baudRateSpinBox->setValue(921600);
-	_baudRateSpinBox->setMinimumWidth(70);
+	//_baudRateSpinBox->setMinimumWidth(70);
 	_baudRateSpinBox->setEnabled(false);
 	
 	_dataBitsLabel = new QLabel(tr(u8"数据位："));
@@ -69,11 +69,11 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 
 	_parityLabel = new QLabel(tr(u8"校验位："));
 	_parityComboBox = new QComboBox;
-	_parityComboBox->addItem(tr(u8"偶校验"), 0);
-	_parityComboBox->addItem(tr(u8"标志校验"), 2);
-	_parityComboBox->addItem(tr(u8"无校验"), 3);
-	_parityComboBox->addItem(tr(u8"奇校验"), 4);
-	_parityComboBox->addItem(tr(u8"空校验"), 5);
+	_parityComboBox->addItem(tr(u8"无校验"), 0);
+	_parityComboBox->addItem(tr(u8"偶标志"), 2);
+	_parityComboBox->addItem(tr(u8"奇校验"), 3);
+	_parityComboBox->addItem(tr(u8"空格校验"), 4);
+	_parityComboBox->addItem(tr(u8"标志校验"), 5);
 	_parityComboBox->addItem(tr(u8"未知校验"), -1);
 	_parityLabel->setBuddy(_parityComboBox);
 	
@@ -104,8 +104,8 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 		_baudRateSpinBox->setEnabled(false);
 		_dataBitsComboBox->setCurrentIndex(3);
 		_stopBitsComboBox->setCurrentIndex(0);
-		_parityComboBox->setCurrentIndex(2);
-		_flowControlComboBox->setCurrentIndex(1);
+		_parityComboBox->setCurrentIndex(0);
+		_flowControlComboBox->setCurrentIndex(0);
 		_directionComboBox->setCurrentIndex(2);
 
 	}
@@ -193,6 +193,7 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 		default:
 			_stopBitsComboBox->setCurrentIndex(_serialPort->stopBits() - 1);
 		}
+		_directionComboBox->setEnabled(false);
 		_directionComboBox->setCurrentIndex(2);
 		
 	}
@@ -201,7 +202,7 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 	connect(_openCloseButton, SIGNAL(clicked()), this, SLOT(openClosePort()));
 	connect(_flushButton, SIGNAL(clicked()), this, SLOT(flushAvaliablePort()));
 	connect(_baudRateComboBox, SIGNAL(currentIndexChanged(int)), this,
-		SLOT(on__baudRateComboBox_currentIndexChanged()));
+		SLOT(on__baudRateComboBox_currentIndexChanged(int)));
 	connect(_baudRateSpinBox, SIGNAL(editingFinished()), this,
 		SLOT(on__baudRateSpinBox_editingFinished()));
 	connect(_dataBitsComboBox, SIGNAL(currentIndexChanged(int)), this,
@@ -211,7 +212,7 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 	connect(_parityComboBox, SIGNAL(currentIndexChanged(int)), this,
 		SLOT(on__parityComboBox_currentIndexChanged(int)));
 	connect(_flowControlComboBox, SIGNAL(currentIndexChanged(int)), this,
-		SLOT(on__flowControlComboBox_currentIndexChange(int)));
+		SLOT(on__flowControlComboBox_currentIndexChanged(int)));
 	//布局
 	QGridLayout *topLayout = new QGridLayout;
 	topLayout->addWidget(_portNameLabel, 0, 0);
@@ -233,7 +234,7 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 
 	QHBoxLayout *bottomLayout = new QHBoxLayout;
 	bottomLayout->addWidget(_openCloseButton);
-	bottomLayout->addSpacing(0);
+	bottomLayout->addStretch();
 	bottomLayout->addWidget(_flushButton);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -257,7 +258,7 @@ void SerialPortWidget::flushAvaliablePort()
 
 }
 
-bool SerialPortWidget::openClosePort()
+void SerialPortWidget::openClosePort()
 {
 	bool isOpen = _serialPort->isOpen();
 	
@@ -271,14 +272,10 @@ bool SerialPortWidget::openClosePort()
 
 		_serialPort->close();
 		flushAvaliablePort();
-		return true;
+		emit message(tr(u8"串口已经关闭"));
 	}
 	else
 	{
-		_openCloseButton->setText(u8"关闭");
-		_flushButton->setEnabled(false);
-		_portNameComboBox->setEnabled(false);
-
 		_serialPort->setPortName(_portNameComboBox->currentText());
 		if (_baudRateComboBox->currentData().toInt() == -1)
 		{
@@ -294,8 +291,19 @@ bool SerialPortWidget::openClosePort()
 		_serialPort->setParity(QSerialPort::Parity(_parityComboBox->currentData().toInt()));
 		_serialPort->setFlowControl(
 			QSerialPort::FlowControl(_flowControlComboBox->currentData().toInt()));
-		_directionComboBox->setEnabled(false);
-		return (_serialPort->open((QIODevice::OpenMode(_directionComboBox->currentData().toUInt()))));
+		
+		if (_serialPort->open((QIODevice::OpenMode(_directionComboBox->currentData().toUInt()))))
+		{
+			_openCloseButton->setText(u8"关闭");
+			_flushButton->setEnabled(false);
+			_portNameComboBox->setEnabled(false);
+			_directionComboBox->setEnabled(false);
+			emit message(tr(u8"串口已经打开"));
+		}
+		else
+		{
+			emit message(tr(u8"串口打开失败，错误原因：%1").arg(_serialPort->errorString()));
+		}
 	}
 }
 
