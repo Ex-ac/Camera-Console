@@ -20,24 +20,22 @@ class SerialPortWidget : public QWidget
 
 public:
 	SerialPortWidget(QSerialPort *serialport, QWidget *parent = nullptr);
-	
+
+	inline QSerialPort *_currentSerialPort() { return _serialPort; }
 
 
 public slots:
 	void flushAvaliablePort();
-	void openClosePort(QString &name);
+	bool openClosePort();
 
 private slots:
-void on__baudRateComboBox_currentIndexChanged(int i);
-void on__baudRateSpinBox_valueChanged(int i);
-void on__dataBitsComboBox_currentIndexChanged(int i);
-void on__stopBitsComboBox_currentIndexChanged(int i);
-void on__parityComboBox_currentIndexChanged(int i);
-void on__flowControlComboBox_currentIndexChanged(int i);
+	void on__baudRateComboBox_currentIndexChanged(int);
+	void on__baudRateSpinBox_editingFinished();
+	void on__dataBitsComboBox_currentIndexChanged(int);
+	void on__stopBitsComboBox_currentIndexChanged(int);
+	void on__parityComboBox_currentIndexChanged(int);
+	void on__flowControlComboBox_currentIndexChanged(int);
 
-
-signals:
-	void message(QString &message);
 
 private:
 	QPushButton *_openCloseButton;
@@ -60,16 +58,17 @@ private:
 	QLabel *_parityLabel;
 	QComboBox *_parityComboBox;
 
-	QLabel *_directionLabel;
-	QLabel *_directionComboBox;
 
 	QLabel *_flowControlLabel;
 	QComboBox *_flowControlComboBox;
 
+
+	QLabel *_directionLabel;
+	QComboBox *_directionComboBox;
+
+
 	QSerialPort *_serialPort;
 
-	//is need??
-	bool isOpened = false;
 
 };
 
