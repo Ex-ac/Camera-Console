@@ -11,7 +11,8 @@ DEFINES += WIN64 QT_DLL QT_SERIALPORT_LIB QT_WIDGETS_LIB
 INCLUDEPATH += ./GeneratedFiles \
     . \
     ./GeneratedFiles/Debug \
-    ./Code/SelectedCamera
+    ./Code/SelectedCamera \
+    ./Code/TakePhotoSettingWidget
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug
