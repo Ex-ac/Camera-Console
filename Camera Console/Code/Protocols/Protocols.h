@@ -15,12 +15,14 @@ class AbstractProtocolsTransfers
     uchar receiveDataBuff[AnswerCommandBuffSize];
     uchar sendDataBuff[RequestCommandBuffSize];
     PackBuff *p_PackBuff = nullptr;
+	
     virtual void sendRequestCommand(uchar (*data)[RequestCommandBuffSize]);
     virtual void sendByte(uchar data) = 0;
     virtual uchar getByte() = 0;
     virtual void getLongByte(uchar *buff, unsigned short size) = 0;
     virtual void getFirst11ByteCommand();
     virtual void getLast2ByteCommand();
+	
 };
 
 class MasterProtocols

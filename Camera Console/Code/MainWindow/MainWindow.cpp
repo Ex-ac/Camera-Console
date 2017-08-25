@@ -205,15 +205,22 @@ void MainWindow::reset(int number)
 	int c = 0, r = 0;
 
 	QSize size((_leftLayout->sizeHint()).height() / MaxR, (_leftLayout->sizeHint()).height() / MaxR);
-	QPushButton *temp;
+	CameraWidget *temp;
 	for (int i = 0; i < number; ++i)
 	{
-		temp = new QPushButton;
-		temp->setEnabled(false);
+		temp = new CameraWidget(i);
+		//temp->setEnabled(false);
 		
 		temp->setFixedSize(size);
 		_cameraList.append(temp);
 		_rightLayout->addWidget(temp, c, r++);
+
+		temp->setImage(QImage());
+		//QPalette backgroundPalette = temp->palette();
+		//QPixmap pixmap = QPixmap(":/CameraConsole/test.jpg").scaledToWidth(200);
+
+		//backgroundPalette.setBrush(QPalette::Background, pixmap);
+		//temp->setPalette(backgroundPalette);
 		if (r == MaxR)
 		{
 			c++;

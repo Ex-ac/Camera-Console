@@ -6,6 +6,8 @@
 #include "Code\TakePhotoSettingWidget\TakePhotoSettingWidget.h"
 #include "Code\SerialPort\SerialPortWidget.h"
 
+#include "CameraWidget.h"
+
 #include "QSplitter"
 
 #include <QMainWindow>
@@ -45,7 +47,7 @@ private:
 	void reset(int number);
 
 
-	QList<QPushButton *> _cameraList;
+	QList<CameraWidget *> _cameraList;
 
 	SelectedCameraWidget *_selectedCameraWidget;
 	SystemControlWidget *_systemControlWiget;

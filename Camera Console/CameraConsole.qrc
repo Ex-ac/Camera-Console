@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/CameraConsole">
         <file>Ex.jpg</file>
+        <file>test.jpg</file>
     </qresource>
 </RCC>
