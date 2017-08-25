@@ -1,22 +1,17 @@
 ﻿#include <QtWidgets/QApplication>
 
+#include "Code\MainWindow\MainWindow.h"
+
 //test
-#include "SerialPort\SerialPortWidget.h"
-#include "SelectedCamera\SelectedCameraWidget.h"
-#include "Code\TakePhotoSettingWidget\TakePhotoSettingWidget.h"
+//#include "SerialPort\SerialPortWidget.h"
+//#include "SelectedCamera\SelectedCameraWidget.h"
+//#include "Code\TakePhotoSettingWidget\TakePhotoSettingWidget.h"
 #include <QDebug>
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	QSerialPort serialPort;
-	SerialPortWidget widget(&serialPort);
-	widget.show();
-	SelectedCameraWidget widget1(16);
-	widget1.show();
-
-
-	TakePhotoSettingWidget widget2;
-	widget2.show();
+	MainWindow mainWindow;
+	mainWindow.show();
 	return a.exec();
 }

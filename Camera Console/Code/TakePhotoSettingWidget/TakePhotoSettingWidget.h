@@ -18,11 +18,8 @@ class TakePhotoSettingWidget : public QWidget
 public:
 	TakePhotoSettingWidget(QWidget *parent = nullptr);
 signals:
-	void autoFocusRequest(const uchar data[RequestCommandBuffSize]);
-	void setFocusRequest(const uchar data[RequestCommandBuffSize]);
-	void getFocusRquest(const uchar data[RequestCommandBuffSize]);
-	void takePhotoRequest(const uchar data[RequestCommandBuffSize]);
-
+	void request(const char *data);
+	
 private slots:
 	void on__takePhotoButton_clicked();
 	void on__autoFocusButton_clicked();

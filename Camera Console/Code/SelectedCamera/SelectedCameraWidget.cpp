@@ -7,7 +7,7 @@
 #include <QGroupBox>
 
 SelectedCameraWidget::SelectedCameraWidget(int numberOfCamera, QWidget *parent)
-	:_numberOfCamera(numberOfCamera)
+	:QWidget(parent), _numberOfCamera(numberOfCamera)
 {
 	_selectedAllButton = new QPushButton(tr(u8"全选"));
 	_selectedAllButton->setDefault(true);
@@ -16,26 +16,8 @@ SelectedCameraWidget::SelectedCameraWidget(int numberOfCamera, QWidget *parent)
 	_unselectedAllButton = new QPushButton(tr(u8"清除"));
 	connect(_unselectedAllButton, SIGNAL(clicked()), this, SLOT(unselectedAll()));
 
-	topLayout = new QGridLayout;
-	reset();
-}
+	_topLayout = new QGridLayout;
 
-void SelectedCameraWidget::reset()
-{
-	qDeleteAll(_checkBoxList);
-	QCheckBox *temp;
-	int row = 0, column = 0;
-	for (int i = 0; i < _numberOfCamera; ++i)
-	{
-		temp = new QCheckBox(tr(u8"%1").arg(i + 1));
-		_checkBoxList.append(temp);
-		topLayout->addWidget(temp, row, column);
-		if (++column == MaxCountOfColumn)
-		{
-			++row;
-			column = 0;
-		}
-	}
 	QHBoxLayout *bottomLayout = new QHBoxLayout;
 	bottomLayout->addWidget(_selectedAllButton);
 	bottomLayout->addWidget(_unselectedAllButton);
@@ -43,17 +25,40 @@ void SelectedCameraWidget::reset()
 
 	QVBoxLayout *groupLayout = new QVBoxLayout;
 
-	QGroupBox *groupBox = new QGroupBox;
+	_groupBox = new QGroupBox;
 
 
-	groupLayout->addLayout(topLayout);
+	groupLayout->addLayout(_topLayout);
 	groupLayout->addLayout(bottomLayout);
-	groupBox->setLayout(groupLayout);
-	groupBox->setTitle(tr(u8"选择相机"));
+	_groupBox->setLayout(groupLayout);
+	_groupBox->setTitle(tr(u8"选择相机--相机数量%1").arg(_numberOfCamera));
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
-	mainLayout->addWidget(groupBox);
+	mainLayout->addWidget(_groupBox);
 	setLayout(mainLayout);
+
+	reset();
+}
+
+void SelectedCameraWidget::reset()
+{
+	qDeleteAll(_checkBoxList);
+	_checkBoxList.clear();
+	QCheckBox *temp;
+	int row = 0, column = 0;
+	for (int i = 0; i < _numberOfCamera; ++i)
+	{
+		temp = new QCheckBox(tr(u8"%1").arg(i + 1));
+		_checkBoxList.append(temp);
+		_topLayout->addWidget(temp, row, column);
+		if (++column == MaxCountOfColumn)
+		{
+			++row;
+			column = 0;
+		}
+	}
+	_groupBox->setTitle(tr(u8"选择相机--相机数量%1").arg(_numberOfCamera));
+
 }
 
 quint32 SelectedCameraWidget::flagOfTheSelectedCamera()

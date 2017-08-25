@@ -129,7 +129,7 @@ void TakePhotoSettingWidget::on__takePhotoButton_clicked()
 	uchar data[RequestCommandBuffSize] = { 0x00 };
 
 	MasterProtocols::takePictureRequest(&data, &info);
-	emit takePhotoRequest(data);
+	emit request((const char *)data);
 }
 
 void TakePhotoSettingWidget::on__autoFocusButton_clicked()
@@ -137,7 +137,7 @@ void TakePhotoSettingWidget::on__autoFocusButton_clicked()
 	FocusRequest request = FocusRequest::AutoFocus;
 	uchar data[RequestCommandBuffSize] = { 0x00 };
 	MasterProtocols::focusRequest(&data, request);
-	emit autoFocusRequest(data);
+	emit TakePhotoSettingWidget::request((const char *)data);
 }
 
 void TakePhotoSettingWidget::on__setFocusButton_clicked()
@@ -145,7 +145,7 @@ void TakePhotoSettingWidget::on__setFocusButton_clicked()
 	FocusRequest request = FocusRequest::SetZoom;
 	uchar data[RequestCommandBuffSize] = { 0x00 };
 	MasterProtocols::focusRequest(&data, request, _focusSpinBox->value());
-	emit autoFocusRequest(data);
+	emit TakePhotoSettingWidget::request((const char *)data);
 }
 
 void TakePhotoSettingWidget::on__getFocusButton_clicked()
@@ -153,5 +153,5 @@ void TakePhotoSettingWidget::on__getFocusButton_clicked()
 	FocusRequest request = FocusRequest::GetZoom;
 	uchar data[RequestCommandBuffSize] = { 0x00 };
 	MasterProtocols::focusRequest(&data, request);
-	emit autoFocusRequest(data);
+	emit TakePhotoSettingWidget::request((const char *)data);
 }

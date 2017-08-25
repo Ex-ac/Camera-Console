@@ -272,7 +272,7 @@ void SerialPortWidget::openClosePort()
 
 		_serialPort->close();
 		flushAvaliablePort();
-		emit message(tr(u8"串口已经关闭"));
+		emit hasOpen(false);
 	}
 	else
 	{
@@ -298,11 +298,11 @@ void SerialPortWidget::openClosePort()
 			_flushButton->setEnabled(false);
 			_portNameComboBox->setEnabled(false);
 			_directionComboBox->setEnabled(false);
-			emit message(tr(u8"串口已经打开"));
+			emit hasOpen(true);
 		}
 		else
 		{
-			emit message(tr(u8"串口打开失败，错误原因：%1").arg(_serialPort->errorString()));
+			emit hasOpen(false);
 		}
 	}
 }

@@ -13,7 +13,6 @@ class QLabel;
 class QComboBox;
 class QSpinBox;
 
-
 class SerialPortWidget : public QWidget
 {
 	Q_OBJECT
@@ -24,7 +23,7 @@ public:
 	inline QSerialPort *_currentSerialPort() { return _serialPort; }
 
 signals:
-	void message(const QString &str);
+	void hasOpen(bool t);
 
 public slots:
 	void flushAvaliablePort();

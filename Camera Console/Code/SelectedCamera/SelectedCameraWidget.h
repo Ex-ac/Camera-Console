@@ -5,7 +5,7 @@
 class QCheckBox;
 class QPushButton;
 class QGridLayout;
-
+class QGroupBox;
 
 class SelectedCameraWidget : public QWidget
 {
@@ -33,7 +33,8 @@ private:
 	QList<QCheckBox *> _checkBoxList;
 	QPushButton *_selectedAllButton;
 	QPushButton *_unselectedAllButton;
-	QGridLayout *topLayout;
+	QGridLayout *_topLayout;
+	QGroupBox *_groupBox;
 	int _numberOfCamera;
 };
 
