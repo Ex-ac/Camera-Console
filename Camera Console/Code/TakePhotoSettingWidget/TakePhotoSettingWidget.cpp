@@ -34,9 +34,9 @@ TakePhotoSettingWidget::TakePhotoSettingWidget(QWidget *parent)
 	_resolutionComboBox->addItem(tr(u8"320×240"), quint8(1));
 	_resolutionComboBox->addItem(tr(u8"640×480"), quint8(2));
 	_resolutionComboBox->addItem(tr(u8"800×600"), quint8(3));
-	_resolutionComboBox->addItem(tr(u8"1024×768"), quint8(4));	
+	_resolutionComboBox->addItem(tr(u8"1024×768"), quint8(4));
 	_resolutionComboBox->addItem(tr(u8"1280×960"), quint8(5));
-	_resolutionComboBox->addItem(tr(u8"1600×1200"), quint8(6));	
+	_resolutionComboBox->addItem(tr(u8"1600×1200"), quint8(6));
 	_resolutionComboBox->addItem(tr(u8"2048×1536"), quint8(7));
 	_resolutionComboBox->addItem(tr(u8"2592×1944"), quint8(8));
 	_resolutionLabel->setBuddy(_resolutionComboBox);
@@ -44,8 +44,8 @@ TakePhotoSettingWidget::TakePhotoSettingWidget(QWidget *parent)
 	_qualityLabel = new QLabel(tr(u8"照片质量："));
 	_qualityComboBox = new QComboBox;
 	_qualityComboBox->addItem(tr(u8"极高"), quint8(1));
-	_qualityComboBox->addItem(tr(u8"高"), quint8(2)); 
-	_qualityComboBox->addItem(tr(u8"中等"), quint8(3)); 
+	_qualityComboBox->addItem(tr(u8"高"), quint8(2));
+	_qualityComboBox->addItem(tr(u8"中等"), quint8(3));
 	_qualityComboBox->addItem(tr(u8"低"), quint8(4));
 	_qualityLabel->setBuddy(_qualityComboBox);
 

@@ -100,7 +100,7 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 	{
 		_openCloseButton->setText(tr(u8"打开"));
 		flushAvaliablePort();
-		_baudRateComboBox->setCurrentIndex(1);
+		_baudRateComboBox->setCurrentIndex(5);
 		_baudRateSpinBox->setEnabled(false);
 		_dataBitsComboBox->setCurrentIndex(3);
 		_stopBitsComboBox->setCurrentIndex(0);

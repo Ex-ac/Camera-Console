@@ -1,4 +1,4 @@
-#ifndef PROTOCLOS_H_
+﻿#ifndef PROTOCLOS_H_
 #define PROTOCLOS_H_
 
 #include "generalizeddatastructure.h"

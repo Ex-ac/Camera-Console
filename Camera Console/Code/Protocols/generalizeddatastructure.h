@@ -1,4 +1,4 @@
-#ifndef GENERALIZEDDATASTRUCTURE_H_
+﻿#ifndef GENERALIZEDDATASTRUCTURE_H_
 #define GENERALIZEDDATASTRUCTURE_H_
 
 using uchar = unsigned char;
@@ -64,6 +64,13 @@ private:
 };
 
 const short MaxSizeOfBuffByte = 1024;
+
+enum class StoreWay : uchar
+{
+	StoreToSD = 0x01,
+	StoreToPC = 0x02
+};
+
 enum class BaudRate : uchar
 {
     BaudRate9600 = 1,

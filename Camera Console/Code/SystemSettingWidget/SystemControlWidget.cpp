@@ -1,4 +1,4 @@
-#include "SystemControlWidget.h"
+ï»¿#include "SystemControlWidget.h"
 
 #include <QPushButton>
 
@@ -20,19 +20,19 @@ SystemControlWidget::SystemControlWidget(QWidget *parent)
 	_timer->start(500);
 
 
-	_setTimeButton = new QPushButton(tr(u8"ÉèÖÃÊ±¼ä"));
+	_setTimeButton = new QPushButton(tr(u8"è®¾ç½®æ—¶é—´"));
 	connect(_setTimeButton, SIGNAL(clicked()), this, SLOT(on__setTimeButton_clicked()));
 
-	_howManyButton = new QPushButton(tr(u8"²éÑ¯Ïà»úÊýÁ¿"));
+	_howManyButton = new QPushButton(tr(u8"æŸ¥è¯¢ç›¸æœºæ•°é‡"));
 	connect(_howManyButton, SIGNAL(clicked()), this, SLOT(on__howManyButton_clicked()));
 
 
-	_storeToSDCheckBox = new QCheckBox(tr(u8"´æµ½´æ´¢¿¨ÖÐ"));
-	_storeToPCCheckBox = new QCheckBox(tr(u8"·¢ËÍ´òµçÄÔ"));
-	_setStoreButton = new QPushButton(tr(u8"ÉèÖÃ´æ´¢·½Ê½"));
+	_storeToSDCheckBox = new QCheckBox(tr(u8"å­˜åˆ°å­˜å‚¨å¡ä¸­"));
+	_storeToPCCheckBox = new QCheckBox(tr(u8"å‘é€åˆ°ç”µè„‘"));
+	_setStoreButton = new QPushButton(tr(u8"è®¾ç½®å­˜å‚¨æ–¹å¼"));
 	connect(_setStoreButton, SIGNAL(clicked()), this, SLOT(on__setStoreButton_clicked()));
 
-	QGroupBox *mainGroupBox = new QGroupBox(tr(u8"ÏµÍ³ÉèÖÃ"));
+	QGroupBox *mainGroupBox = new QGroupBox(tr(u8"ç³»ç»Ÿè®¾ç½®"));
 
 	QGridLayout *groupLayout = new QGridLayout;
 	groupLayout->addWidget(_currentDateTimeLabel, 0, 0, 1, 3, Qt::AlignmentFlag::AlignHCenter);
@@ -66,8 +66,8 @@ void SystemControlWidget::on__setStoreButton_clicked()
 void SystemControlWidget::on__setTimeButton_clicked()
 {
 	char data[5] = { 0x03 };
-	QDateTime dateTime(QDateTime::currentDateTime());
-	uint temp = dateTime.toTime_t();
+
+	uint temp = QDateTime::currentDateTime().toTime_t();
 	for (int i = 1; i < 5; ++i)
 	{
 		data[i] = temp & (0xff << (2 * (5 - i)));

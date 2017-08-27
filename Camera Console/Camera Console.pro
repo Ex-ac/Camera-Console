@@ -12,7 +12,10 @@ INCLUDEPATH += ./GeneratedFiles \
     . \
     ./GeneratedFiles/Debug \
     ./Code/SelectedCamera \
-    ./Code/TakePhotoSettingWidget
+    ./Code/TakePhotoSettingWidget \
+    ./Code/SystemSettingWidget \
+    ./Code/MainWindow \
+    ./Code/SerialPort
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug

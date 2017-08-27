@@ -1,12 +1,11 @@
-#ifndef MAINWINDOW_H_
+﻿#ifndef MAINWINDOW_H_
 #define MAINWINDOW_H_
 
 #include "Code\SelectedCamera\SelectedCameraWidget.h"
 #include "Code\SystemSettingWidget\SystemControlWidget.h"
 #include "Code\TakePhotoSettingWidget\TakePhotoSettingWidget.h"
 #include "Code\SerialPort\SerialPortWidget.h"
-
-#include "CameraWidget.h"
+#include "Code\CameraWidget\CameraWidget.h"
 
 #include "QSplitter"
 
@@ -15,7 +14,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <cmath>
-
+#include <QDir>
 
 #include <qdebug.h>
 
@@ -45,7 +44,8 @@ public slots:
 
 private:
 	void reset(int number);
-
+	void treatmentCameraResponse();
+	void treatmentSystemResponse();
 
 	QList<CameraWidget *> _cameraList;
 
@@ -56,6 +56,7 @@ private:
 	QGridLayout *_rightLayout;
 	QSerialPort _serialPort;
 	QVBoxLayout *_leftLayout;
+	QDir _currentDir;
 };
 
 

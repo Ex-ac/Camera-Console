@@ -6,8 +6,8 @@
 //#include "SerialPort\SerialPortWidget.h"
 //#include "SelectedCamera\SelectedCameraWidget.h"
 //#include "Code\TakePhotoSettingWidget\TakePhotoSettingWidget.h"
-#include "CameraWidget.h"
-#include <QDebug>
+//#include "CameraWidget.h"
+
 
 int main(int argc, char *argv[])
 {
