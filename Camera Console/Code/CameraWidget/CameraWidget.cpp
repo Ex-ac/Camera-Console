@@ -5,8 +5,10 @@
 #include <QLayout>
 #include <QPixmap>
 #include <QDir>
-
+#include <qpushbutton.h>
 #include <QDebug>
+
+#include <QFile>
 
 CameraWidget::CameraWidget(int id, QWidget *parent)
 	: QWidget(parent), _id(id)
@@ -140,13 +142,24 @@ void CameraWidget::dealDataPack(PackBuff & packBuff)
 	qCopy(packBuff.getPointToPackBuff(), packBuff.getPointToPackBuff() + packBuff.getSizeOfByte(),
 		_byteArray.begin() + (1024 * (packBuff.getNumberOfPack() - 1)));
 	
-
+	setCurrentPack(packBuff.getNumberOfPack());
 	if (packBuff.getNumberOfPack() == _picturePackInfo.sizeOfPack)
 	{
 		QImage image(_byteArray);
-		QString fileName = QDir::currentPath() + tr("/%1.jpg").arg(_id);
+		QString fileName = QDir::currentPath() + tr("/%1.bin").arg(_id);
 		qDebug() << fileName;
-		image.save(fileName);
+		
+
+		QFile file(fileName);
+		file.open(QIODevice::OpenModeFlag::WriteOnly);
+
+		file.write(_byteArray);
+
+		file.close();
+		if (!image.save(fileName))
+		{
+			qDebug() << "save error";
+		}
 
 		setImage(fileName);
 	}

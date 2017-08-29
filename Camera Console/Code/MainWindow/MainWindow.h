@@ -44,8 +44,8 @@ public slots:
 
 private:
 	void reset(int number);
-	void treatmentCameraResponse();
-	void treatmentSystemResponse();
+	void treatmentCameraResponse(QByteArray & byteArray);
+	void treatmentSystemResponse(QByteArray & byteArray);
 
 	QList<CameraWidget *> _cameraList;
 
