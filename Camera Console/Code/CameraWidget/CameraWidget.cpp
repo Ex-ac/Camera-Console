@@ -18,7 +18,7 @@ CameraWidget::CameraWidget(int id, QWidget *parent)
 	setAttribute(Qt::WidgetAttribute::WA_TranslucentBackground, false);
 
 	_titleLabel = new QLabel(tr(u8"相机--%1").arg(_id));
-
+	setStyleSheet("color:red;");
 	_zoomTitleLabel = new QLabel(tr(u8"焦距："));
 	_zoomValueLabel = new QLabel(tr(u8"待获取"));
 
@@ -145,8 +145,8 @@ void CameraWidget::dealDataPack(PackBuff & packBuff)
 	setCurrentPack(packBuff.getNumberOfPack());
 	if (packBuff.getNumberOfPack() == _picturePackInfo.sizeOfPack)
 	{
-		QImage image(_byteArray);
-		QString fileName = QDir::currentPath() + tr("/%1.bin").arg(_id);
+		
+		QString fileName = QDir::currentPath() + tr("/%1.jpg").arg(_id);
 		qDebug() << fileName;
 		
 
@@ -156,11 +156,14 @@ void CameraWidget::dealDataPack(PackBuff & packBuff)
 		file.write(_byteArray);
 
 		file.close();
-		if (!image.save(fileName))
-		{
-			qDebug() << "save error";
-		}
+
+		//QImage image(_byteArray);
+		//if (!image.save(fileName))
+		//{
+		//	qDebug() << "save error";
+		//}
 
 		setImage(fileName);
+		//_byteArray.clear();
 	}
 }

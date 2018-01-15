@@ -304,6 +304,8 @@ void SerialPortWidget::openClosePort()
 		{
 			emit hasOpen(false);
 		}
+		_serialPort->setRequestToSend(true);
+		_serialPort->setDataTerminalReady(false);
 	}
 }
 

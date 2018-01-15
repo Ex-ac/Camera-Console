@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//_serialPortWidget->setFixedSize(_serialPortWidget->sizeHint());
 	connect(_serialPortWidget, SIGNAL(hasOpen(bool)), this, SLOT(setWidgetEnable(bool)));
 
-	_serialPort.setReadBufferSize(1024 * 2); //1M
+	_serialPort.setReadBufferSize(1024 * 1024 * 100); //1M
 	connect(&_serialPort, SIGNAL(readyRead()), this, SLOT(treatmentResponse()));
 
 	setWidgetEnable(false);
@@ -161,7 +161,7 @@ void MainWindow::treatmentResponse()
 		else
 		{
 			dataBuff.append(_serialPort.read(11));
-			needSizeOfbByte = (uchar(dataBuff[2]) << 8) + uchar(dataBuff[3]) + 6;
+			needSizeOfbByte = (uchar(dataBuff[2]) << 8) + uchar(dataBuff[3]);
 		}
 	}
 
@@ -178,10 +178,12 @@ void MainWindow::treatmentResponse()
 		}
 		else
 		{
+			qDebug() << dataBuff.toHex() << endl;
 			treatmentCameraResponse(dataBuff);
 		}
 		needSizeOfbByte = 0;
 	}
+	
 }
 
 void MainWindow::reset(int number)
@@ -258,7 +260,7 @@ void MainWindow::treatmentCameraResponse(QByteArray & byteArray)
 		case uchar(MasterProtocols::AnswerCommand::GetPicturePack):
 		{
 			unsigned short numberOfPack = (uchar(byteArray[7]) << 8) + uchar(byteArray[8]);
-			PackBuff packBuff(sizeOfByte - 8, numberOfPack);
+			PackBuff packBuff(sizeOfByte - 14, numberOfPack);
 			qCopy(byteArray.begin() + 12, byteArray.end() - 2, packBuff.getPointToPackBuff());
 			_cameraList[id]->dealDataPack(packBuff);
 		}

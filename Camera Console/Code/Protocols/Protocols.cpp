@@ -13,12 +13,6 @@ void AbstractProtocolsTransfers::sendRequestCommand(uchar (*data)[RequestCommand
     sendData[11] = MasterProtocols::checksum(sendData + 1, AnswerCommandBuffSize - 3);
     sendData[12] = uchar(MasterProtocols::Flag::EndFlag);
 
-    //debug
-    //for (int i = 0; i < AnswerCommandBuffSize; ++i)
-    //{
-    //    printf("%2x ", sendData[i]);
-    //}
-    //printf("\n");
 
     for (int i = 0; i < AnswerCommandBuffSize; ++i)
     {
@@ -50,12 +44,6 @@ void AbstractProtocolsTransfers::getLast2ByteCommand()
     {
         receiveDataBuff[i] = getByte();
     }
-
-    //for (uchar i = 0; i < AnswerCommandBuffSize; ++i)
-    //{
-    //    printf("%2x ", receiveDataBuff[i]);
-    //}
-    //printf("\n");
 }
 
 unsigned short MasterProtocols::packSize(AbstractProtocolsTransfers
@@ -114,7 +102,7 @@ void MasterProtocols::takePictureRequest(
 {
     (*data)[0] = uchar(RequestCommand::TakePicture);
     (*data)[1] = uchar(p_info->resolution);
-    (*data)[2] = uchar(p_info->isColor ? 0x00 : 0x01) + uchar(p_info->quality);
+    (*data)[2] = uchar(p_info->isColor ? 0x00 : 0x10) + uchar(p_info->quality);
     (*data)[3] = uchar(p_info->imageFormat);
     (*data)[4] = uchar(p_info->exposure);
 }
