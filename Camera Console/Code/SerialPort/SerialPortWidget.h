@@ -5,8 +5,8 @@
 	
 */
 
-#include <qwidget.h>
-#include <qserialport.h>
+#include <QtWidgets/QWidget.h>
+#include <QtSerialPort/QSerialPort>
 
 class QPushButton;
 class QLabel;

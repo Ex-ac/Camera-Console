@@ -1,7 +1,7 @@
 ﻿#ifndef SELECTEDCAMERAWIDGET_H_
 #define SELECTEDCAMERAWIDGET_H_
 
-#include <QWidget>
+#include <QtWidgets/QWidget>
 class QCheckBox;
 class QPushButton;
 class QGridLayout;

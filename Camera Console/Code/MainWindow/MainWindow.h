@@ -1,22 +1,23 @@
 ﻿#ifndef MAINWINDOW_H_
 #define MAINWINDOW_H_
 
-#include "Code\SelectedCamera\SelectedCameraWidget.h"
-#include "Code\SystemSettingWidget\SystemControlWidget.h"
-#include "Code\TakePhotoSettingWidget\TakePhotoSettingWidget.h"
-#include "Code\SerialPort\SerialPortWidget.h"
-#include "Code\CameraWidget\CameraWidget.h"
+#include "../SelectedCamera/SelectedCameraWidget.h"
+#include "../SystemSettingWidget/SystemControlWidget.h"
+#include "../TakePhotoSettingWidget/TakePhotoSettingWidget.h"
+#include "../SerialPort/SerialPortWidget.h"
+#include "../CameraWidget/CameraWidget.h"
+#include "../Communication/Communication.h"
 
-#include "QSplitter"
+#include <QtWidgets/QSplitter>
 
-#include <QMainWindow>
-#include <QList>
-#include <QLabel>
-#include <QLayout>
+#include <QtWidgets/QMainWindow>
+#include <QtCore/QList>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLayout>
 #include <cmath>
-#include <QDir>
-
-#include <qdebug.h>
+#include <QtCore/QDir>
+#include <QtCore/QThread>
+#include <QtCore/QDebug>
 
 class MainWindow : public QMainWindow
 {
@@ -28,8 +29,8 @@ public:
 
 
 public slots:
-	bool sendSystemCommand(const char *data, uchar count);
-	bool sendCameraCommand(const char *data);
+	void sendSystemCommand(const char *data, uchar count);
+	void sendCameraCommand(const char *data);
 	void howManyCameraRequest(const char data);
 	void setStoreRequest(const char *data);
 	void setTimeReauest(const char *data);
@@ -47,6 +48,8 @@ private:
 	void treatmentCameraResponse(QByteArray & byteArray);
 	void treatmentSystemResponse(QByteArray & byteArray);
 
+	SerialPortCommuncation _serialPortCommuncation;
+
 	QList<CameraWidget *> _cameraList;
 
 	SelectedCameraWidget *_selectedCameraWidget;
@@ -54,7 +57,9 @@ private:
 	TakePhotoSettingWidget *_takePhotoWidget;
 	SerialPortWidget *_serialPortWidget;
 	QGridLayout *_rightLayout;
-	QSerialPort _serialPort;
+
+	QThread _thread;
+	
 	QVBoxLayout *_leftLayout;
 	QDir _currentDir;
 };

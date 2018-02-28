@@ -1,9 +1,9 @@
-#ifndef TAKEPHOTOSETTINGWIDGET_H_
+﻿#ifndef TAKEPHOTOSETTINGWIDGET_H_
 #define TAKEPHOTOSETTINGWIDGET_H_
 
-#include <QWidget>
-#include "Code\Protocols\Protocols.h"
-#include "Code\Protocols\generalizeddatastructure.h"
+#include <QtWidgets/QWidget>
+#include "../Protocols/Protocols.h"
+#include "../Protocols/generalizeddatastructure.h"
 
 class QPushButton;
 class QSpinBox;

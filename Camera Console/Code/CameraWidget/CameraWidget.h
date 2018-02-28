@@ -1,12 +1,14 @@
 ﻿#ifndef CAMERAWIDGET_H_
 #define CAMERAWIDGET_H_
 
-#include <QDialog>
-#include <QImage>
 
+#include <QtWidgets/QDialog>
+#include <QtGui/QImage>
+#include <QtCore/QBitArray>
+#include <QtCore/QList>
 
-#include "Code\Protocols\generalizeddatastructure.h"
-#include "Code\Protocols\Protocols.h"
+#include "../Protocols/generalizeddatastructure.h"
+#include "../Protocols/Protocols.h"
 
 
 class QLabel;
@@ -34,16 +36,19 @@ public:
 
 	inline bool needStoreToPC() { return uchar(_storeWay) & uchar(StoreWay::StoreToPC); }
 
-	void dealDataPack(PackBuff &packBuff);
+	void dealDataPack(const QByteArray &data);
 	void setImage(const QString &fileName);
+	QList<unsigned short> allPackHasGet();
 
 private:
 	const int _id;
 	Zoom _zoom;
 	PicturePackInfo _picturePackInfo;
 	int _currentPack;
-	QByteArray _byteArray;
+	//QByteArray _byteArray;
 	StoreWay _storeWay;
+
+	//QBitArray _packBitArray;
 
 	QLabel *_titleLabel;
 	QLabel *_zoomTitleLabel;

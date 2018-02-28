@@ -1,20 +1,20 @@
-﻿#include "CameraWidget.h"
+﻿#include "./CameraWidget/CameraWidget.h"
 
-#include <QtWidgets/QLabel>
-#include <QtGui/QPalette>
-#include <QtWidgets/QLayout>
-#include <QtGui/QPixmap>
-#include <QtCore/QDir>
-#include <QtWidgets/QPushButton>
-#include <QtCore/QDebug>
+#include <QLabel>
+#include <QPalette>
+#include <QLayout>
+#include <QPixmap>
+#include <QDir>
+#include <qpushbutton.h>
+#include <QDebug>
 
-#include <QtCore/QFile>
+#include <QFile>
 
 CameraWidget::CameraWidget(int id, QWidget *parent)
 	: QWidget(parent), _id(id)
 {
 	this->setWindowTitle(tr(u8"相机%1").arg(_id));
-
+	
 	setAttribute(Qt::WidgetAttribute::WA_TranslucentBackground, false);
 
 	_titleLabel = new QLabel(tr(u8"相机--%1").arg(_id));
@@ -37,6 +37,9 @@ CameraWidget::CameraWidget(int id, QWidget *parent)
 	_statusTitleLabel = new QLabel(tr(u8"状态："));
 	_statusValueLabel = new QLabel(tr(u8"空闲"));
 
+
+
+
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 
 	QHBoxLayout *tempLayout = new QHBoxLayout;
@@ -53,12 +56,13 @@ CameraWidget::CameraWidget(int id, QWidget *parent)
 	tempLayout->addWidget(_sizeOfByteValueLabel, 0, Qt::AlignmentFlag::AlignLeft);
 	tempLayout->addStretch(100);
 	mainLayout->addLayout(tempLayout);
-
+	
 	tempLayout = new QHBoxLayout;
 	tempLayout->addWidget(_sizeOfPackTitleLabel, 0, Qt::AlignmentFlag::AlignLeft);
 	tempLayout->addWidget(_sizeOfPackValueLabel, 0, Qt::AlignmentFlag::AlignLeft);
 	tempLayout->addStretch(100);
 	mainLayout->addLayout(tempLayout);
+
 
 	tempLayout = new QHBoxLayout;
 	tempLayout->addWidget(_currentPackTitleLabel, 0, Qt::AlignmentFlag::AlignLeft);
@@ -79,18 +83,22 @@ CameraWidget::CameraWidget(int id, QWidget *parent)
 	tempLayout->addStretch(100);
 	mainLayout->addLayout(tempLayout);
 
-	setAutoFillBackground(true);
 
+
+	setAutoFillBackground(true);
+	
 	setLayout(mainLayout);
+	
 }
 
 void CameraWidget::setImage(const QString &fileName)
 {
 	QPalette backgroundPalette = this->palette();
 
-	backgroundPalette.setBrush(QPalette::Background,
-							   QPixmap(fileName).scaled(this->size(), Qt::AspectRatioMode::KeepAspectRatioByExpanding));
+	backgroundPalette.setBrush(QPalette::Background, 
+		QPixmap(fileName).scaled(this->size(), Qt::AspectRatioMode::KeepAspectRatioByExpanding));
 	setPalette(backgroundPalette);
+	
 }
 
 void CameraWidget::setZoom(Zoom zoom)
@@ -99,12 +107,9 @@ void CameraWidget::setZoom(Zoom zoom)
 	_zoomValueLabel->setText(tr(u8"%1").arg(zoom));
 }
 
-void CameraWidget::setPicturePackInfo(const PicturePackInfo &info)
+void CameraWidget::setPicturePackInfo(const PicturePackInfo & info)
 {
-	//_packBitArray.resize(info.sizeOfPack);
-	//_packBitArray.fill(false);
-
-	//_byteArray = QByteArray(info.sizeOfByte, 0xff);
+	_byteArray = QByteArray(info.sizeOfByte, 0xff);
 	_picturePackInfo = info;
 	_sizeOfByteValueLabel->setText(tr(u8"%1").arg(info.sizeOfByte));
 	_sizeOfPackValueLabel->setText(tr(u8"%1").arg(info.sizeOfPack));
@@ -132,49 +137,33 @@ inline void CameraWidget::setStoreWay(StoreWay storeWay)
 	_storeWayValueLabel->setText(string);
 }
 
-void CameraWidget::dealDataPack(const QByteArray &data)
+void CameraWidget::dealDataPack(PackBuff & packBuff)
 {
+	qCopy(packBuff.getPointToPackBuff(), packBuff.getPointToPackBuff() + packBuff.getSizeOfByte(),
+		_byteArray.begin() + (1024 * (packBuff.getNumberOfPack() - 1)));
+	
+	setCurrentPack(packBuff.getNumberOfPack());
+	if (packBuff.getNumberOfPack() == _picturePackInfo.sizeOfPack)
+	{
+		
+		QString fileName = QDir::currentPath() + tr("/%1.jpg").arg(_id);
+		qDebug() << fileName;
+		
 
-	unsigned short length = uchar(data[1]) * 256 + uchar(data[2]);
-	unsigned short numberOfPack = uchar(data[6]) * 256 + uchar(data[7]);
+		QFile file(fileName);
+		file.open(QIODevice::OpenModeFlag::WriteOnly);
 
-	//qCopy(packBuff.getPointToPackBuff(), packBuff.getPointToPackBuff() + packBuff.getSizeOfByte(),
-	//	  _byteArray.begin() + (1024 * (packBuff.getNumberOfPack() - 1)));
+		file.write(_byteArray);
 
-	//_packBitArray.setBit(packBuff.getNumberOfPack() - 1, true);
+		file.close();
 
-	setCurrentPack(numberOfPack);
+		//QImage image(_byteArray);
+		//if (!image.save(fileName))
+		//{
+		//	qDebug() << "save error";
+		//}
 
-	//if (packBuff.getNumberOfPack() == _picturePackInfo.sizeOfPack)
-	//{
-
-	//	/*if (allPackHasGet() == QList<unsigned short>())
-	//	{
-	//		QString fileName = QDir::currentPath() + tr("/%1.jpg").arg(_id);
-	//		qDebug() << fileName;
-
-	//		QFile file(fileName);
-	//		file.open(QIODevice::OpenModeFlag::WriteOnly);
-
-	//		file.write(_byteArray);
-
-	//		file.close();
-	//		setImage(fileName);
-	//	}*/
-	//}
-}
-
-QList<unsigned short> CameraWidget::allPackHasGet()
-{
-	QList<unsigned short> data;
-
-	//for (int i = 0; i < _packBitArray.size(); ++i)
-	//{
-	//	if (!_packBitArray.at(i))
-	//	{
-	//		data.append(i + 1);
-	//	}
-	//}
-
-	return data;
+		setImage(fileName);
+		//_byteArray.clear();
+	}
 }

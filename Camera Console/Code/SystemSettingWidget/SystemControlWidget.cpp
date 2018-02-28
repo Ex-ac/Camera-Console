@@ -1,14 +1,14 @@
 ﻿#include "SystemControlWidget.h"
 
-#include <QPushButton>
+#include <QtWidgets/QPushButton>
 
-#include <QDateTimeEdit>
-#include <QCheckBox>
-#include <QGroupBox>
-#include <QLayout>
-#include <QByteArray>
-#include <qtimer.h>
-#include <QLabel>
+#include <QtWidgets/QDateTimeEdit>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLayout>
+#include <QtCore/QByteArray>
+#include <QtCore/qtimer.h>
+#include <QtWidgets/QLabel>
 
 SystemControlWidget::SystemControlWidget(QWidget *parent)
 	:QWidget(parent)

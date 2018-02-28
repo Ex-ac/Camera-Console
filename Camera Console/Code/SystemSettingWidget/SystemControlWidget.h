@@ -1,8 +1,8 @@
 ﻿#ifndef SYSTEMCONTROLWIDGET_H_
 #define SYSTEMCONTROLWIDGET_H_
 
-#include <QWidget>
-#include <QDateTime>
+#include <QtWidgets/QWidget>
+#include <QtCore/QDateTime>
 
 class QPushButton;
 class QCheckBox;

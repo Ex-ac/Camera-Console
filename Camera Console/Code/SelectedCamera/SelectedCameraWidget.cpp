@@ -1,10 +1,10 @@
 ﻿#include "SelectedCameraWidget.h"
 
-#include <QList>
-#include <QCheckBox>
-#include <QPushButton>
-#include <QLayout>
-#include <QGroupBox>
+#include <QtCore/QList>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLayout>
+#include <QtWidgets/QGroupBox>
 
 SelectedCameraWidget::SelectedCameraWidget(int numberOfCamera, QWidget *parent)
 	:QWidget(parent), _numberOfCamera(numberOfCamera)

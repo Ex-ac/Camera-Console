@@ -1,11 +1,11 @@
-﻿#include "TakePhotoSettingWidget.h"
+﻿#include "./TakePhotoSettingWidget.h"
 
-#include <QLayout>
-#include <QGroupBox>
-#include <QPushButton>
-#include <QSpinBox>
-#include <QComboBox>
-#include <QLabel>
+#include <QtWidgets/QLayout>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLabel>
 
 TakePhotoSettingWidget::TakePhotoSettingWidget(QWidget *parent)
 	: QWidget(parent)

@@ -1,11 +1,11 @@
 ﻿#include <QtWidgets/QApplication>
 
-#include "Code\MainWindow\MainWindow.h"
+#include "./MainWindow/MainWindow.h"
 
 //test
-//#include "SerialPort\SerialPortWidget.h"
-//#include "SelectedCamera\SelectedCameraWidget.h"
-//#include "Code\TakePhotoSettingWidget\TakePhotoSettingWidget.h"
+//#include "SerialPort/SerialPortWidget.h"
+//#include "SelectedCamera/SelectedCameraWidget.h"
+//#include "Code/TakePhotoSettingWidget/TakePhotoSettingWidget.h"
 //#include "CameraWidget.h"
 
 
@@ -16,3 +16,4 @@ int main(int argc, char *argv[])
 	mainWindow.show();
 	return a.exec();
 }
+  

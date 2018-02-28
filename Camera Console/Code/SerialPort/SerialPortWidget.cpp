@@ -1,12 +1,12 @@
 ﻿#include "SerialPortWidget.h"
 
-#include <qpushbutton.h>
-#include <qcombobox.h>
-#include <qserialportinfo.h>
-#include <qlayout.h>
-#include <qlist.h>
-#include <QLabel>
-#include <QSpinBox>
+#include <QtWidgets/qpushbutton.h>
+#include <QtWidgets/qcombobox.h>
+#include <QtSerialPort/qserialportinfo.h>
+#include <QtWidgets/qlayout.h>
+#include <QtCore/qlist.h>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QSpinBox>
 
 SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 	:QWidget(parent), _serialPort(serialport)
@@ -41,7 +41,7 @@ SerialPortWidget::SerialPortWidget(QSerialPort *serialport, QWidget *parent)
 	
 	_baudRateSpinBox->setMinimum(0);
 	_baudRateSpinBox->setMaximum(99999999);
-	_baudRateSpinBox->setValue(921600);
+	_baudRateSpinBox->setValue(1152000);
 	//_baudRateSpinBox->setMinimumWidth(70);
 	_baudRateSpinBox->setEnabled(false);
 	
