@@ -11,11 +11,13 @@ HEADERS += ./Code/Protocols/generalizeddatastructure.h \
     ./Code/Protocols/Protocols.h \
     ./Code/MainWindow/MainWindow.h \
     ./Code/CameraWidget/CameraWidget.h \
+    ./Code/Communication/Communication.h \
     ./Code/TakePhotoSettingWidget/TakePhotoSettingWidget.h \
     ./Code/SystemSettingWidget/SystemControlWidget.h \
     ./Code/SerialPort/SerialPortWidget.h \
     ./Code/SelectedCamera/SelectedCameraWidget.h
 SOURCES += ./Code/CameraWidget/CameraWidget.cpp \
+    ./Code/Communication/Communication.cpp \
     ./Code/main.cpp \
     ./Code/MainWindow/MainWindow.cpp \
     ./Code/Protocols/Protocols.cpp \

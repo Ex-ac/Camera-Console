@@ -57,7 +57,7 @@ private:
     QByteArray _lastBuff;
     QSerialPort _serialPort;
     QTimer _timer;
-    qint64 _intervalMsec = 100;
+    qint64 _intervalMsec = 10;
     QReadWriteLock _locker;
 };
 

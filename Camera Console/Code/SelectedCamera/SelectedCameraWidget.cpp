@@ -18,10 +18,16 @@ SelectedCameraWidget::SelectedCameraWidget(int numberOfCamera, QWidget *parent)
 
 	_topLayout = new QGridLayout;
 
+	_getLastPack = new QPushButton(tr(u8"掉包获取"));
+	_getLastPack->setEnabled(false);
+	connect(_getLastPack, SIGNAL(clicked()), this, SLOT(on__getLastPack_clicked()));
+
+
 	QHBoxLayout *bottomLayout = new QHBoxLayout;
 	bottomLayout->addWidget(_selectedAllButton);
 	bottomLayout->addWidget(_unselectedAllButton);
 	bottomLayout->addStretch();
+	bottomLayout->addWidget(_getLastPack);
 
 	QVBoxLayout *groupLayout = new QVBoxLayout;
 
@@ -74,6 +80,11 @@ quint32 SelectedCameraWidget::flagOfTheSelectedCamera()
 	return temp;
 }
 
+void SelectedCameraWidget::getLastPackEnable(bool enable)
+{
+	_getLastPack->setEnabled(enable);
+}
+
 void SelectedCameraWidget::selectedAll()
 {
 	for (auto i : _checkBoxList)
@@ -88,4 +99,9 @@ void SelectedCameraWidget::unselectedAll()
 	{
 		i->setChecked(false);
 	}
+}
+
+void SelectedCameraWidget::on__getLastPack_Clicked()
+{
+	emit getLastPackClicked();
 }

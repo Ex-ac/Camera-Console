@@ -38,17 +38,28 @@ public:
 
 	void dealDataPack(const QByteArray &data);
 	void setImage(const QString &fileName);
-	QList<unsigned short> allPackHasGet();
+	QList<unsigned short> packNeedGet();
+	bool isAllPackHasGet();
+
+
+signals:
+	void hasPackNotGet();
 
 private:
+
+	bool _isAllPackHasGet = false;
+	
+
+	bool _firstGetFinished = false;
+
 	const int _id;
 	Zoom _zoom;
 	PicturePackInfo _picturePackInfo;
 	int _currentPack;
-	//QByteArray _byteArray;
+	QByteArray _byteArray;
 	StoreWay _storeWay;
 
-	//QBitArray _packBitArray;
+	QBitArray _packBitArray;
 
 	QLabel *_titleLabel;
 	QLabel *_zoomTitleLabel;

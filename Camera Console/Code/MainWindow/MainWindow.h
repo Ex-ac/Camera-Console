@@ -39,7 +39,8 @@ public slots:
 
 
 	void treatmentResponse();
-
+	
+	void getLastPack();
 
 
 

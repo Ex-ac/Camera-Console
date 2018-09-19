@@ -67,10 +67,10 @@ void SystemControlWidget::on__setTimeButton_clicked()
 {
 	char data[5] = { 0x03 };
 
-	uint temp = QDateTime::currentDateTime().toTime_t();
-	for (int i = 1; i < 5; ++i)
+	quint64 temp = QDateTime::currentDateTime().toMSecsSinceEpoch();
+	for (int i = 1; i < 8; ++i)
 	{
-		data[i] = temp & (0xff << (2 * (5 - i)));
+		data[i] = temp & (0xff << (2 * (8 - i)));
 	}
 	emit setTimeReauest(data);
 }

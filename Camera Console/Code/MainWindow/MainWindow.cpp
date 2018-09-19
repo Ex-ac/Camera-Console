@@ -8,12 +8,15 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
 	_currentDir = QDir::current();
+	qDebug() << _currentDir.path();
 
 	_selectedCameraWidget = new SelectedCameraWidget(0);
+	//connect(_selectedCameraWidget, SIGNAL(getLastPackClicked()), this, )
 	//_selectedCameraWidget->setFixedSize(_selectedCameraWidget->sizeHint());
 
 	_systemControlWiget = new SystemControlWidget;
 	//_systemControlWiget->setFixedSize(_systemControlWiget->sizeHint());
+	
 
 	connect(_systemControlWiget, SIGNAL(howManyCameraRequest(const char)), this,
 			SLOT(howManyCameraRequest(const char)));
@@ -31,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(_serialPortWidget, SIGNAL(hasOpen(bool)), this, SLOT(setWidgetEnable(bool)));
 	
 	connect(&_serialPortCommuncation, SIGNAL(newDataIn(int)), this, SLOT(treatmentResponse()));
+	
+	
 	//_serialPortCommuncation.moveToThread(&_thread);
 
 	//_thread.start();
@@ -62,12 +67,11 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::sendSystemCommand(const char *data, uchar count)
 {
 	QByteArray byteData;
-	byteData.append(quint8('s'));
-	byteData.append(quint8(count));
+	byteData.append(quint8('S'));
 	byteData.append((char *)data, count);
-	byteData.append(quint8('s'));
+	byteData.append(11 - count, 0xff);
 
-	qDebug() << byteData.toHex();
+	qDebug() << byteData.toHex() << "\tSize: " << byteData.size();
 
 	_serialPortCommuncation.sendData(byteData);
 }
@@ -75,22 +79,22 @@ void MainWindow::sendSystemCommand(const char *data, uchar count)
 void MainWindow::sendCameraCommand(const char *data)
 {
 	QByteArray byteData;
-	byteData.append(quint8('c'));
-	byteData.append(quint8(RequestCommandBuffSize + sizeof(quint32)));
+	byteData.append(quint8('C'));
+	//byteData.append(quint8(RequestCommandBuffSize + sizeof(quint32)));
 	quint32 temp = _selectedCameraWidget->flagOfTheSelectedCamera();
 	for (int i = 0; i < 4; i++)
 	{
 		byteData.append(temp >> (8 * (3 - i)));
 	}
 	byteData.append((char *)data, RequestCommandBuffSize);
-	byteData.append(quint8('c'));
+	//byteData.append(quint8('c'));
 	
 
 	//for (int i = 0; i < 1024; ++i)
 	//{
 	//	byteData.append(byteData);
 	//}
-	qDebug() << byteData.toHex();
+	qDebug() << byteData.toHex() << "\tSize: " << byteData.size();
 
 	_serialPortCommuncation.sendData(byteData);
 	if (uchar(*(data + 4)) == uchar(MasterProtocols::RequestCommand::TakePicture))
@@ -104,6 +108,7 @@ void MainWindow::sendCameraCommand(const char *data)
 
 void MainWindow::howManyCameraRequest(const char data)
 {
+
 	sendSystemCommand(&data, 1);
 }
 
@@ -149,9 +154,23 @@ void MainWindow::treatmentResponse()
 		{
 			treatmentCameraResponse(temp);
 		}
-		//qDebug() << temp.toHex();
+
 	}
 	
+}
+
+void MainWindow::getLastPack()
+{
+	for (auto i : _cameraList)
+	{
+		if (i->isAllPackHasGet())
+		{
+			for (auto j : i->packNeedGet())
+			{
+				;
+			}
+		}
+	}
 }
 
 void MainWindow::reset(int number)
@@ -163,6 +182,7 @@ void MainWindow::reset(int number)
 	}
 	_selectedCameraWidget->setNumberOfCamera(number);
 	qDeleteAll(_cameraList);
+	
 	_cameraList.clear();
 	int c = 0, r = 0;
 
@@ -171,12 +191,11 @@ void MainWindow::reset(int number)
 	for (int i = 0; i < number; ++i)
 	{
 		temp = new CameraWidget(i);
-		//temp->setEnabled(false);
 
 		temp->setFixedSize(size);
 		_cameraList.append(temp);
 		_rightLayout->addWidget(temp, c, r++);
-
+		
 		if (r == MaxR)
 		{
 			c++;

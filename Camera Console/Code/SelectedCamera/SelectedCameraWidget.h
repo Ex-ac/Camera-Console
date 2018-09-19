@@ -21,10 +21,17 @@ public:
 	inline int numberOfCamera() { return _numberOfCamera; }
 	quint32 flagOfTheSelectedCamera();
 
+	inline void getLastPackEnable(bool enable);
+
 	void reset();
 public slots:
 	void selectedAll();
 	void unselectedAll();
+	void on__getLastPack_Clicked();
+
+signals:
+	void getLastPackClicked();
+
 private:
 	enum
 	{
@@ -33,6 +40,7 @@ private:
 	QList<QCheckBox *> _checkBoxList;
 	QPushButton *_selectedAllButton;
 	QPushButton *_unselectedAllButton;
+	QPushButton *_getLastPack;
 	QGridLayout *_topLayout;
 	QGroupBox *_groupBox;
 	int _numberOfCamera;

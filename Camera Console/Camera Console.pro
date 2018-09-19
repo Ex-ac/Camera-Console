@@ -5,19 +5,19 @@
 TEMPLATE = app
 TARGET = Camera Console
 DESTDIR = ../x64/Debug
-QT += core widgets gui serialport
+QT += core gui widgets serialport
 CONFIG += debug
-DEFINES += WIN64 QT_DLL QT_SERIALPORT_LIB QT_WIDGETS_LIB
+DEFINES += WIN64 QT_SERIALPORT_LIB QT_WIDGETS_LIB
 INCLUDEPATH += ./GeneratedFiles \
     . \
-    ./GeneratedFiles/Debug \
+    ./GeneratedFiles/$(ConfigurationName) \
     ./Code/SelectedCamera \
     ./Code/TakePhotoSettingWidget \
     ./Code/SystemSettingWidget \
     ./Code/MainWindow \
     ./Code/SerialPort
 DEPENDPATH += .
-MOC_DIR += ./GeneratedFiles/debug
+MOC_DIR += ./GeneratedFiles/$(ConfigurationName)
 OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles

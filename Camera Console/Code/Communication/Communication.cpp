@@ -70,22 +70,14 @@ void SerialPortCommuncation::on__timer_timeout()
 		return;
     }
 
-	//QByteArray temp1 = _serialPort.readAll();
-	//QByteArray temp = _lastBuff;
-	//_lastBuff.clear();
-
-	//_lastBuff.resize(temp.size() + temp1.size() + 20);
-	//_lastBuff.append(temp);
-	//_lastBuff.append(temp1);
 	
 	_lastBuff.append(_serialPort.readAll());
     
 
-	qDebug() << _lastBuff.size();
+	qDebug() << _lastBuff.toHex();
 
 
     QByteArray::iterator begin = _lastBuff.begin();
- /*   QByteArray::iterator end;*/
 
     while (begin < _lastBuff.end())
     {

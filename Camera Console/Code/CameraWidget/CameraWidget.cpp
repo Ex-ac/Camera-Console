@@ -88,6 +88,13 @@ void CameraWidget::setImage(const QString &fileName)
 {
 	QPalette backgroundPalette = this->palette();
 
+	QFile file(fileName);
+	file.open(QIODevice::OpenModeFlag::WriteOnly);
+
+
+	file.write(_byteArray);
+	file.close();
+
 	backgroundPalette.setBrush(QPalette::Background,
 							   QPixmap(fileName).scaled(this->size(), Qt::AspectRatioMode::KeepAspectRatioByExpanding));
 	setPalette(backgroundPalette);
@@ -101,10 +108,17 @@ void CameraWidget::setZoom(Zoom zoom)
 
 void CameraWidget::setPicturePackInfo(const PicturePackInfo &info)
 {
-	//_packBitArray.resize(info.sizeOfPack);
-	//_packBitArray.fill(false);
+	_packBitArray.resize(info.sizeOfPack);
 
-	//_byteArray = QByteArray(info.sizeOfByte, 0xff);
+	_packBitArray.fill(false);
+
+	_isAllPackHasGet = false;
+	_firstGetFinished = false;
+
+	_byteArray.resize(info.sizeOfByte);
+
+	qDebug() << "ID: " << _id << "\t Byte: " << info.sizeOfByte << "\t Pack:" << info.sizeOfPack;
+
 	_picturePackInfo = info;
 	_sizeOfByteValueLabel->setText(tr(u8"%1").arg(info.sizeOfByte));
 	_sizeOfPackValueLabel->setText(tr(u8"%1").arg(info.sizeOfPack));
@@ -138,43 +152,72 @@ void CameraWidget::dealDataPack(const QByteArray &data)
 	unsigned short length = uchar(data[1]) * 256 + uchar(data[2]);
 	unsigned short numberOfPack = uchar(data[6]) * 256 + uchar(data[7]);
 
-	//qCopy(packBuff.getPointToPackBuff(), packBuff.getPointToPackBuff() + packBuff.getSizeOfByte(),
-	//	  _byteArray.begin() + (1024 * (packBuff.getNumberOfPack() - 1)));
+	
 
-	//_packBitArray.setBit(packBuff.getNumberOfPack() - 1, true);
+	qCopy(data.begin() + 11, data.end() - 2,
+		  _byteArray.begin() + (1024 * (numberOfPack - 1)));
+
+	qDebug() << "ID: " << _id << "\t Pack:" << numberOfPack - 1 << "\tByte:" << length << "\tSize: " << _packBitArray.size();
+	_packBitArray.setBit(numberOfPack - 1, true);
+	
+	
 
 	setCurrentPack(numberOfPack);
 
-	//if (packBuff.getNumberOfPack() == _picturePackInfo.sizeOfPack)
-	//{
 
-	//	/*if (allPackHasGet() == QList<unsigned short>())
-	//	{
-	//		QString fileName = QDir::currentPath() + tr("/%1.jpg").arg(_id);
-	//		qDebug() << fileName;
+	if (!_firstGetFinished)
+	{
+		if (numberOfPack == _picturePackInfo.sizeOfPack)
+		{
+			_firstGetFinished = true;
+		}
+	}
 
-	//		QFile file(fileName);
-	//		file.open(QIODevice::OpenModeFlag::WriteOnly);
+	if (!_firstGetFinished)
+	{
+		return;
+	}
 
-	//		file.write(_byteArray);
-
-	//		file.close();
-	//		setImage(fileName);
-	//	}*/
-	//}
+	if (isAllPackHasGet())
+	{
+		QString fileName = QDir::currentPath() + tr("/%1.jpg").arg(_id);
+		setImage(fileName);
+	}
+	else
+	{
+		emit hasPackNotGet();
+	}
 }
 
-QList<unsigned short> CameraWidget::allPackHasGet()
+QList<unsigned short> CameraWidget::packNeedGet()
 {
 	QList<unsigned short> data;
 
-	//for (int i = 0; i < _packBitArray.size(); ++i)
-	//{
-	//	if (!_packBitArray.at(i))
-	//	{
-	//		data.append(i + 1);
-	//	}
-	//}
+	for (int i = 0; i < _packBitArray.size(); ++i)
+	{
+		if (!_packBitArray.at(i))
+		{
+			data.append(i + 1);
+		}
+	}
 
 	return data;
+}
+
+bool CameraWidget::isAllPackHasGet()
+{
+	if (_isAllPackHasGet)
+	{
+		return true;
+	}
+
+	for (int i = 0; i < _packBitArray.size(); ++i)
+	{
+		if (!_packBitArray.at(i))
+		{
+			return false;
+		}
+	}
+	_isAllPackHasGet = true;
+	return _isAllPackHasGet;
 }
